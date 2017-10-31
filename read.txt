@@ -1,0 +1,5 @@
+Correlativo | Producto | Enero | Febrero | Marzo | Abril | Mayo | Junio | Julio | Agosto | Septiembre | Octubre | Noviembre | Diciembre
+01 | Sopa | 2222 | 3 | 9 | 10 | 111 | 184 | 210 | 191 | 188 | 201 | 222 | 200
+02 | Azucar | 221 | 143 | 459 | 110 | 191 | 184 | 211 | 291 | 288 | 242 | 251 | 560
+03 | Gaseozas | 21 | 43 | 59 | 10 | 91 | 84 | 11 | 91 | 88 | 42 | 51 | 60
+04 | Pan | 21 | 13 | 49 | 10 | 11 | 14 | 21 | 21 | 28 | 22 | 21 | 5000
