@@ -1,40 +1,157 @@
 # include <iostream>
 # include <fstream>
-# include <string>
 
 using namespace std;
 
+int Submenu ()
+{
+	int month;
+	cout << "\n******************\n";
+	cout << "1  - Enero" << endl;
+	cout << "2  - Febrero" << endl;
+	cout << "3  - Marzo" << endl;
+	cout << "4  - Abril" << endl;
+	cout << "5  - Mayo" << endl;
+	cout << "6  - Junio" << endl;
+	cout << "7  - Julio" << endl;
+	cout << "8  - Agosto" << endl;
+	cout << "9  - Septiembre" << endl;
+	cout << "10 - Octubre" << endl;
+	cout << "11 - Noviembre" << endl;
+	cout << "12 - Diciembre" << endl;
+	cout << "\n******************\n";
+	cout << "\n\tIngrese el numero del mes\n\t\t";
+	cin >> month;
+	return month;
+}
+
 int main ()
 {
-	string line;
-	int i = 0, cont = 0;
-	const char PIPE = 124;
-	ifstream amount ("read.txt");
-	if (amount.is_open())
+	int A = 0, I = 0, J = -15, K = 0, MN, SMN, Month;
+    string Head[A];
+	string Line, Temp = "", Rows, Temp2;
+	double Cell, Ans, AnsT;
+	ifstream Y ("read.txt");
+	if (Y.is_open())
 	{
-		while (getline (amount,line))
+		while (getline (Y,Rows))
 		{
-			cont++;
+			A++;
 		}
-		amount.close();
+		Y.close();
 	}
-	string prod[cont];
-	ifstream read ("read.txt");
-	if (read.is_open())
-	{
-		while (getline (read,line))
+	double Amount[A-1][12];
+	ifstream File ("read.txt");
+    if (File.is_open())
+    {
+        while (getline(File, Line, '|') || getline(File, Line, '\0'))
 		{
-			cout << line.length() << endl;
-			prod[i] = line;
-			i++;
+			if (I > 12)
+			{
+				// Concatena los numeros
+				for (int a = 0; a < Line.length(); a++)
+				{
+					if (Line[a] != ',')
+						Temp += Line[a];
+				}
+				// Convierte los numeros que estan en la variable Temp tipo string a tipo float
+				Cell = strtof((Temp).c_str(),0);
+				Temp2 = Temp;
+				Temp = "";
+				if (J == 12)
+				{
+					J = -1;
+					K++;
+				}
+				// Llena la matriz con los numeros con decimales
+				if (J >= 0)
+				{
+					Amount[K][J] = Cell;
+					//cout << K << "|" << J << "|" << Temp2 << endl;
+				}
+			}
+			I++;	
+			J++;
 		}
-		read.close();
+		File.close();
+		for (int a = 0; a < (A - 1); a++)
+		{
+			for (int e = 0; e < 12; e++)
+			{
+				cout << Amount[a][e] << "\t";
+			}
+			cout << endl;
+		}
+		/*do
+		{
+			cout << "\n======================================================\n\n";
+			cout << "1 -  *Total de ventas por mes" << endl;
+			cout << "2 -  Total de ventas por producto" << endl;
+			cout << "3 -  Producto mas vendido por en todos los meses" << endl;
+			cout << "4 -  Producto menos vendido en un mes" << endl;
+			cout << "5 -  *Producto mas vendio en un mes" << endl;
+			cout << "6 -  *Producto  menos vendido en un mes" << endl;
+			cout << "7 -  Mes con mas ventas" << endl;
+			cout << "8 -  Mes con menos ventas" << endl;
+			cout << "9 -  Promedio de ventas por mes" << endl;
+			cout << "10 - Promedio de ventas en todos los meses" << endl;
+			cout << "======================================================\n\n";
+			cout << "\t Ingrese un numero para elegir una opcion del menu\n\t\t";
+			cin >> MN;
+			switch (MN)
+			{
+				case 1:
+					Ans = 0;
+					Month = Submenu();
+					for (int a = 0; a < (A - 1); a++)
+					{
+						Ans += Amount[a][Month -1];
+					}
+					cout << "Las ventas de mes son: " << Ans << endl;
+					break;
+				case 2:
+					Ans = 0;
+					AnsT = 0;
+					for (int a = 0; a < (A - 1); a++)
+					{
+						for (int e = 0; e < 12; e++)
+						{
+							Ans += Amount[e][a];
+						}
+						if (Ans > AnsT)
+						{
+							AnsT = Ans;
+						}
+					}
+					cout << "El Producto mas vendido: " << AnsT << endl;
+					break;
+				case 3:
+					break;
+				case 4:
+					break;
+				case 5:
+					Submenu();
+					break;
+				case 6:
+					Submenu();
+					break;
+				case 7:
+					break;
+				case 8:
+					break;
+				case 9:
+					break;
+				case 10:
+					break;
+				default:
+					break;
+			}
+		}
+		while (MN == 's' || MN == 'S');*/
 	}
 	else
 	{
-		cout << "Unable to open file";
+		cout << "No se logro abrir el archivo" << endl;
 	}
-	for (int a = 0; a < i; a++)
-		cout << prod[a] << endl;
-	return 0;
+    return 0;
 }
