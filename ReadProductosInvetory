@@ -1,5 +1,6 @@
 # include <iostream>
 # include <fstream>
+# include <cstdlib>
 
 using namespace std;
 
@@ -72,269 +73,309 @@ string Months(int month)
 
 int main ()
 {
-	int A = 0, I = 0, J = -15, K = 0, MN, SMN, Month;
-	string Line, Temp = "", Rows, Temp2, Show;
+	int A = 0, I = 0, J = -15, K = 0, MN, SMN, Month, Start = 0;
+	string Line, Temp = "", Rows, Temp2, Show, Path;
+	char REP;
 	double Cell, Ans, AnsT;
-	ifstream Y ("read.txt");
-	if (Y.is_open())
+	do
 	{
-		while (getline (Y,Rows))
+		cout << "Ingrese el nombre del archivo" << endl;
+		cin >> Path;
+		ifstream Y;
+		Y.open(Path.c_str());
+		if (Y.good())
 		{
-			A++;
-		}
-		Y.close();
-	}
-	string Head[A - 1];
-	double Amount[A-1][12];
-	ifstream File ("read.txt");
-    if (File.is_open())
-    {
-        while (getline(File, Line, '|') || getline(File, Line, '\0'))
-		{
-			if (I > 12)
+			while (getline (Y,Rows))
 			{
-				// Concatena los numeros
-				for (int a = 0; a < Line.length(); a++)
-				{
-					if (Line[a] != ',')
-						Temp += Line[a];
-				}
-				// Convierte los numeros que estan en la variable Temp tipo string a tipo float
-				Cell = strtod((Temp).c_str(),0);
-				Temp2 = Temp;
-				Temp = "";
-				if (J == 12)
-				{
-					J = -1;
-					K++;
-				}
-				if (J == -1)
-				{
-					Head[K] = Temp2;
-					//cout << A - 1 << "|" << K << "|" << Temp2 << endl;
-				}
-				// Llena la matriz con los numeros con decimales
-				if (J >= 0)
-				{
-					Amount[K][J] = Cell;
-					//cout << K << "|" << J << "|" << Temp2 << endl;
-				}
+				A++;
 			}
-			I++;	
-			J++;
+			Start = 1;
+			Y.close();
 		}
-		File.close();
-		for (int a = 0; a < (A - 1); a++)
+		else
 		{
-			for (int e = 0; e < 12; e++)
-			{
-				cout << Amount[a][e] << "\t";
-			}
-			cout << endl;
+			cout << "No se logro abrir el archivo" << endl;
+			cout << "Verifique que el nombre y ubicacion del archivo sean correctos\n\n\n\n\n\n\n\n\t\t";
+			system("pause");
+			system("cls");
 		}
-		do
+		if (Start == 1)
 		{
-			cout << "\n======================================================\n\n";
-			cout << "1 -  Total de ventas por mes" << endl;
-			cout << "2 -  Total de ventas por producto" << endl;
-			cout << "3 -  Producto mas vendido en todos los meses" << endl;
-			cout << "4 -  Producto menos vendido en todos los mes" << endl;
-			cout << "5 -  *Producto mas vendio en un mes" << endl;
-			cout << "6 -  *Producto  menos vendido en un mes" << endl;
-			cout << "7 -  Mes con mas ventas" << endl;
-			cout << "8 -  Mes con menos ventas" << endl;
-			cout << "9 -  Promedio de ventas por mes" << endl;
-			cout << "10 - Promedio de ventas en todos los meses" << endl;
-			cout << "======================================================\n\n";
-			cout << "\t Ingrese un numero para elegir una opcion del menu\n\t\t";
-			cin >> MN;
-			switch (MN)
-			{
-				case 1:
-					Ans = 0;
-					Month = Submenu();
-					Show = Months(Month);
-					for (int a = 0; a < (A - 1); a++)
+			string Head[A - 1];
+			double Amount[A-1][12];
+			ifstream File;
+			File.open(Path.c_str());
+    		if (File.good())
+	    	{
+		        while (getline(File, Line, '|') || getline(File, Line, '\0'))
+				{
+					if (I > 12)
 					{
-						Ans += Amount[a][Month -1];
+						// Concatena los numeros
+						for (int a = 0; a < Line.length(); a++)
+						{
+							if (Line[a] != ',')
+								Temp += Line[a];
+						}
+						// Convierte los numeros que estan en la variable Temp tipo string a tipo float
+						Cell = strtod((Temp).c_str(),0);
+						Temp2 = Temp;
+						Temp = "";
+						if (J == 12)
+						{
+							J = -1;
+							K++;
+						}
+						if (J == -1)
+						{
+							Head[K] = Temp2;
+							//cout << A - 1 << "|" << K << "|" << Temp2 << endl;
+						}
+						// Llena la matriz con los numeros con decimales
+						if (J >= 0)
+						{
+							Amount[K][J] = Cell;
+							//cout << K << "|" << J << "|" << Temp2 << endl;
+						}	
 					}
-					cout << "Las ventas de mes " << Show << " son: " << Ans << endl;
-					break;
-				case 2:
-					Ans = 0;
-					AnsT = 0;
-					for (int a = 0; a < (A - 1); a++)
+					I++;	
+					J++;
+				}
+				File.close();
+				for (int a = 0; a < (A - 1); a++)
+				{
+					for (int e = 0; e < 12; e++)
 					{
-						for (int e = 0; e < 12; e++)
-						{
-							Ans += Amount[a][e];
-						}
-						cout << "Se han vendido " << Ans << " del producto:" << Head[a] << endl;
-						Ans = 0;
+						cout << fixed << Amount[a][e]<< "\t";
 					}
-					break;
-				case 3:
-					int C3;
-					Ans = 0;
-					AnsT = 0;
-					for (int a = 0; a < (A - 1); a++)
+					cout << endl;
+				}	
+				do
+				{
+					cout << "\n======================================================\n\n";
+					cout << "1 -  Total de ventas por mes" << endl;
+					cout << "2 -  Total de ventas por producto" << endl;
+					cout << "3 -  Producto mas vendido en todos los meses" << endl;
+					cout << "4 -  Producto menos vendido en todos los mes" << endl;
+					cout << "5 -  Producto mas vendio en un mes" << endl;
+					cout << "6 -  Producto  menos vendido en un mes" << endl;
+					cout << "7 -  Mes con mas ventas" << endl;
+					cout << "8 -  Mes con menos ventas" << endl;
+					cout << "9 -  Promedio de ventas por mes" << endl;
+					cout << "10 - Promedio de ventas en todos los meses" << endl;
+					cout << "======================================================\n\n";
+					cout << "\t Ingrese un numero para elegir una opcion del menu\n\t\t";
+					cin >> MN;
+					switch (MN)
 					{
-						for (int e = 0; e < 12; e++)
-						{
-							Ans += Amount[a][e];
-						}
-						if (Ans > AnsT)
-						{
-							AnsT = Ans;
-							C3 = a;
-						}
-						Ans = 0;
-					}
-					cout << "El producto mas vendido es: " << Head[C3] << " con " << AnsT << " productos vendidos"<< endl;
-					break;
-				case 4:
-					int C4;
-					Ans = 0;
-					AnsT = 0;
-					for (int a = 0; a < (A - 1); a++)
-					{
-						for (int e = 0; e < 12; e++)
-						{
-							Ans += Amount[a][e];
-						}
-						if (AnsT == 0)
-						{
-							AnsT = Ans;
-							C4 = a;
-						}
-						if (AnsT > Ans)
-						{
-							AnsT = Ans;
-							C4 = a;
-						}
-						Ans = 0;
-					}
-					cout << "El producto menos vendido es: " << Head[C4] << " con " << AnsT << " productos vendidos"<< endl;
-					break;
-				case 5:
-					int C5;
-					Ans = 0;
-					Month = Submenu();
-					Show = Months(Month);
-					for (int a = 0; a < (A - 1); a++)
-					{
-						if (Ans < Amount[a][Month -1])
-						{
-							Ans = Amount[a][Month -1];
-							C5 = a;
-						}
-					}
-					cout << "El producto mas vendido en el mes de " << Show << " es " << Head[C5] << "con " << Ans << " productos vendidos" << endl;
-					break;
-				case 6:
-					int C6;
-					Ans = 0;
-					AnsT = 0;
-					Month = Submenu();
-					Show = Months(Month);
-					for (int a = 0; a < (A - 1); a++)
-					{
-						Ans = Amount[a][Month -1];
-						if (AnsT == 0)
-						{
-							AnsT = Ans;
-							C6 = a;
-						}
-						if (Ans < AnsT)
-						{
-							AnsT = Ans;
-							C6 = a;
-						}
-					}
-					cout << "El producto menos vendido en el mes de " << Show << " es " << Head[C6] << "con " << AnsT << " productos vendidos" << endl;
-					break;
-				case 7:
-					int C7;
-					Ans = 0;
-					AnsT = 0;
-					for (int a = 0; a < 12; a++)
-					{
-						for ( int e = 0; e < (A - 1); e++)
-						{
-							Ans += Amount[e][a];
-						}
-						if (AnsT < Ans)
-						{
-							AnsT = Ans;
-							C7 = a;
-						}
-						Ans = 0;
-					}
-					Show = Months(C7 + 1);
-					cout << "El mes con mas ventas a sido " << Show << " con " << AnsT << endl;
-					break;
-				case 8:
-					int C8;
-					Ans = 0;
-					AnsT = 0;
-					for (int a = 0; a < 12; a++)
-					{
-						for ( int e = 0; e < (A - 1); e++)
-						{
-							Ans += Amount[e][a];
-						}
-						if (AnsT == 0)
-						{
-							AnsT = Ans;
-							C8 = a;
-						}
-						if (AnsT > Ans)
-						{
-							AnsT = Ans;
-							C7 = a;
-						}
-						Ans = 0;
-					}
-					Show = Months(C7 + 1);
-					cout << "El mes con menos ventas a sido " << Show << " con " << AnsT << endl;
-					break;
-				case 9:
-					Ans = 0;
-					AnsT = 0;
-					for (int a = 0; a < 12; a++)
-					{
-						for ( int e = 0; e < (A - 1); e++)
-						{
-							Ans += Amount[e][a];
-						}
-						AnsT = Ans;
-						Ans = 0;
-						Show = Months(a + 1);
-						cout << "El promedio de " << Show << " es " << (AnsT / (A - 1)) << endl;
-					}
-					break;
-				case 10:
-					Ans = 0;
-					AnsT = 0;
-					for (int a = 0; a < 12; a++)
-					{
-						for ( int e = 0; e < (A - 1); e++)
-						{
-							Ans += Amount[e][a];
-							AnsT++;
-						}
-					}
-					cout << "El promedio total es " << (Ans / (AnsT)) << endl;
-					break;
-				default:
-					break;
+						case 1:
+							Ans = 0;
+							Month = Submenu();
+							Show = Months(Month);
+							for (int a = 0; a < (A - 1); a++)
+							{
+								Ans += Amount[a][Month -1];
+							}
+							//printf("\tLas ventas de mes %s son %i \n\n\n\n\n\n\t\t", Show, Ans);
+							cout << "\tLas ventas de mes " << Show << " son: " << Ans << "\n\n\n\n\n\n\t\t";
+							system("pause");
+							break;
+						case 2:
+							Ans = 0;
+							AnsT = 0;
+							for (int a = 0; a < (A - 1); a++)
+							{
+								for (int e = 0; e < 12; e++)
+								{
+									Ans += Amount[a][e];
+								}
+								cout << "\t";
+								cout << "Se han vendido " << Ans << " del producto:" << Head[a] << "\n";
+								Ans = 0;
+							}
+							cout << "\n\n\n\n\n\n\t\t";
+							system("pause");
+							break;
+						case 3:
+							int C3;
+							Ans = 0;
+							AnsT = 0;
+							for (int a = 0; a < (A - 1); a++)
+							{
+								for (int e = 0; e < 12; e++)
+								{
+									Ans += Amount[a][e];
+								}
+								if (Ans > AnsT)
+								{
+									AnsT = Ans;
+									C3 = a;
+								}
+								Ans = 0;
+							}
+							cout << "\tEl producto mas vendido es: " << Head[C3] << " con " << AnsT << " productos vendidos"<< "\n\n\n\n\n\n\t\t";
+							system("pause");
+							break;
+						case 4:
+							int C4;
+							Ans = 0;
+							AnsT = 0;
+							for (int a = 0; a < (A - 1); a++)
+							{
+								for (int e = 0; e < 12; e++)
+								{
+									Ans += Amount[a][e];
+								}
+								if (AnsT == 0)
+								{
+									AnsT = Ans;
+									C4 = a;
+								}
+								if (AnsT > Ans)
+								{
+									AnsT = Ans;
+									C4 = a;
+								}
+								Ans = 0;
+							}
+							cout << "\tEl producto menos vendido es: " << Head[C4] << " con " << AnsT << " productos vendidos"<< "\n\n\n\n\n\n\t\t";
+							system("pause");
+							break;
+						case 5:
+							int C5;
+							Ans = 0;
+							Month = Submenu();
+							Show = Months(Month);
+							for (int a = 0; a < (A - 1); a++)
+							{
+								if (Ans < Amount[a][Month -1])
+								{
+									Ans = Amount[a][Month -1];
+									C5 = a;
+								}
+							}
+							cout << "\tEl producto mas vendido en el mes de " << Show << " es " << Head[C5] << "con " << Ans << " productos vendidos" << "\n\n\n\n\n\n\t\t";
+							system("pause");
+							break;
+						case 6:
+							int C6;
+							Ans = 0;
+							AnsT = 0;
+							Month = Submenu();
+							Show = Months(Month);
+							for (int a = 0; a < (A - 1); a++)
+							{
+								Ans = Amount[a][Month -1];
+								if (AnsT == 0)
+								{
+									AnsT = Ans;
+									C6 = a;
+								}
+								if (Ans < AnsT)
+								{
+									AnsT = Ans;
+									C6 = a;
+								}
+							}
+							cout << "El producto menos vendido en el mes de " << Show << " es " << Head[C6] << "con " << AnsT << " productos vendidos" << "\n\n\n\n\n\n\t\t";
+							system("pause");
+							break;
+						case 7:
+							int C7;
+							Ans = 0;
+							AnsT = 0;
+							for (int a = 0; a < 12; a++)
+							{
+								for ( int e = 0; e < (A - 1); e++)
+								{
+									Ans += Amount[e][a];
+								}
+								if (AnsT < Ans)
+								{
+									AnsT = Ans;
+									C7 = a;
+								}
+								Ans = 0;
+							}
+							Show = Months(C7 + 1);
+							cout << "\tEl mes con mas ventas a sido " << Show << " con " << AnsT << "\n\n\n\n\n\n\t\t";
+							system("pause");
+							break;
+						case 8:
+							int C8;
+							Ans = 0;
+							AnsT = 0;
+							for (int a = 0; a < 12; a++)
+							{
+								for ( int e = 0; e < (A - 1); e++)
+								{
+									Ans += Amount[e][a];
+								}
+								if (AnsT == 0)
+								{
+									AnsT = Ans;
+									C8 = a;
+								}	
+								if (AnsT > Ans)
+								{
+									AnsT = Ans;
+									C7 = a;
+								}
+								Ans = 0;
+							}
+							Show = Months(C7 + 1);
+							cout << "\tEl mes con menos ventas a sido " << Show << " con " << AnsT << "\n\n\n\n\n\n\t\t";
+							system("pause");
+							break;
+						case 9:
+							Ans = 0;
+							AnsT = 0;
+							for (int a = 0; a < 12; a++)
+							{
+								for ( int e = 0; e < (A - 1); e++)
+								{
+									Ans += Amount[e][a];
+								}
+								AnsT = Ans;
+								Ans = 0;
+								Show = Months(a + 1);
+								cout << "\tEl promedio de " << Show << " es " << (AnsT / (A - 1)) << endl;
+							}
+							cout << "\n\n\n\n\n\n\t\t";
+							system("pause");
+							break;
+						case 10:
+							Ans = 0;
+							AnsT = 0;
+							for (int a = 0; a < 12; a++)
+							{
+								for ( int e = 0; e < (A - 1); e++)
+								{
+									Ans += Amount[e][a];
+									AnsT++;
+								}
+							}	
+							cout << "\tEl promedio total es " << (Ans / (AnsT)) << "\n\n\n\n\n\n\t\t";
+							system("pause");
+							break;
+						default:
+							system("cls");
+							cout << "El numero ingresado no se encuentra en el rango de 1 - 10" << "\n\n\n\n\n\n\t\t";
+							system("pause");
+							break;
+					}	
+				system("cls");
+				cout << "Ejecutar nuevamente el programa [S/N]" << endl;
+				cin >> REP;
+				}
+				while (REP == 's' || REP == 'S');
+				system("cls");
+				cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\t\t\tWritten by Luis Ortega\n\t\t\t\t7690-17-360\n\n";
+				system("pause");
 			}
 		}
-		while (MN == 's' || MN == 'S');
 	}
-	else
-	{
-		cout << "No se logro abrir el archivo" << endl;
-	}
+	while (Start == 0);
     return 0;
 }
+
