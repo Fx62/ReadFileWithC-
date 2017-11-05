@@ -4,6 +4,7 @@
 
 using namespace std;
 
+// Funcion para retornar el numero de mes que necesita el usuario
 int Submenu ()
 {
 	int month;
@@ -26,6 +27,7 @@ int Submenu ()
 	return month;
 }
 
+// Funcion para retornar nombre del mes segun el numero que ingrese el usuario en funcion 1, 5 y 6
 string Months(int month)
 {
 	string show;
@@ -73,10 +75,30 @@ string Months(int month)
 
 int main ()
 {
+	/*
+	A cuenta las lineas que tiene el archivo
+	I, J, K son contadores para guardar en la matriz Amount, y el vector Head
+	MN guarda el numero del menu principara para ejecutar la funcion solicita
+	SMN guarda el numero del submenu para elegir el mes en la funcion 1, 5 y 6
+	Month almacena el numero del mes
+	Start es un booleano que si es 1 es porque abrio el archivo y 0 sino lo logro abrir
+	Line almacena lineas completas del archivo con un while
+	Temp es donde se concatenan los caracteres para parcer los |
+	Rows es donde se almacenan las lineas para ser contadas
+	Temp2 almacena los double que fueron convertidos despues de ser strings en Temp
+	Show Guarda el nombre del mes
+	Path es donde se almacena el nombre del archivo a utilizar
+	REP si es S o s se vuelve a ejecutar el programa
+	Cell almacena el valor de cada campo 
+	Ans se almacena una respuesta
+	AnsT se almacena otra respuesta como auxiliar de Ans
+	*/
 	int A = 0, I = 0, J = -15, K = 0, MN, SMN, Month, Start = 0;
 	string Line, Temp = "", Rows, Temp2, Show, Path;
-	char REP;
+	char REP = 'z';
 	double Cell, Ans, AnsT;
+	
+	// El do while se ejecuta hasta que logra abrir el archivo
 	do
 	{
 		cout << "Ingrese el nombre del archivo" << endl;
@@ -85,6 +107,7 @@ int main ()
 		Y.open(Path.c_str());
 		if (Y.good())
 		{
+			// Cuenta la cantidad de lineas del archivo
 			while (getline (Y,Rows))
 			{
 				A++;
@@ -92,26 +115,35 @@ int main ()
 			Start = 1;
 			Y.close();
 		}
+		
+		// Este mensaje se muestra sino logra abrir el archivo
 		else
 		{
 			cout << "No se logro abrir el archivo" << endl;
-			cout << "Verifique que el nombre y ubicacion del archivo sean correctos\n\n\n\n\n\n\n\n\t\t";
+			cout << "\n* Verifique que el nombre incluya la extension del archivo y que la ubicacion del archivo sean correctos\n\n\n\n\n\n\n\n\t\t";
 			system("pause");
 			system("cls");
 		}
+		
+		// Si el archivo se logra abrir comieza a ejecutar los calculos segun el archivo
 		if (Start == 1)
 		{
+			// Un vector donde se almacenan los nombres de los productos
 			string Head[A - 1];
+			// Matriz donde se almacenan los datos numericos del archivo
 			double Amount[A-1][12];
+			// Se vuelve abrir el archivo
 			ifstream File;
 			File.open(Path.c_str());
+			// Si el archivo se puede abrir comienza a guardar los datos en la matriz Amount
     		if (File.good())
 	    	{
+	    		// Verifica los | y fines de linea
 		        while (getline(File, Line, '|') || getline(File, Line, '\0'))
 				{
 					if (I > 12)
 					{
-						// Concatena los numeros
+						// Concatena los numeros a la variable Temp en forma de string
 						for (int a = 0; a < Line.length(); a++)
 						{
 							if (Line[a] != ',')
@@ -120,18 +152,21 @@ int main ()
 						// Convierte los numeros que estan en la variable Temp tipo string a tipo float
 						Cell = strtod((Temp).c_str(),0);
 						Temp2 = Temp;
+						// Vacia Temp para la proxima vez que se vuelve a encontrar un |
 						Temp = "";
+						// Suma el contador de las filas
 						if (J == 12)
 						{
 							J = -1;
 							K++;
 						}
+						// Almacena el nombre del producto en el vector Head
 						if (J == -1)
 						{
 							Head[K] = Temp2;
 							//cout << A - 1 << "|" << K << "|" << Temp2 << endl;
 						}
-						// Llena la matriz con los numeros con decimales
+						// Llena la matriz Amount con los numeros con decimales
 						if (J >= 0)
 						{
 							Amount[K][J] = Cell;
@@ -141,15 +176,18 @@ int main ()
 					I++;	
 					J++;
 				}
+				// Cierra el archivo
 				File.close();
-				for (int a = 0; a < (A - 1); a++)
+				/*for (int a = 0; a < (A - 1); a++)
 				{
 					for (int e = 0; e < 12; e++)
 					{
+						// fixed hace que los float se muestren como decimales y no en notacion cientifica
 						cout << fixed << Amount[a][e]<< "\t";
 					}
 					cout << endl;
-				}	
+				}*/
+				// El do while es por si el usuario no ingresa un numero valido, asi se repite hasta ingresar un numero del listado	
 				do
 				{
 					cout << "\n======================================================\n\n";
@@ -166,20 +204,28 @@ int main ()
 					cout << "======================================================\n\n";
 					cout << "\t Ingrese un numero para elegir una opcion del menu\n\t\t";
 					cin >> MN;
+					// El switch hace que ejecuta los calculos para brindar la informacion que el usuario solicita con las opciones de 1 a 10
 					switch (MN)
 					{
+						// Muestra las ventas del mes que solicita el usuario
 						case 1:
-							Ans = 0;
-							Month = Submenu();
+							do
+							{
+								Ans = 0;
+								Month = Submenu();
+								if (Month < 1 || Month > 12)
+									cout << "El numero " << Month << " ingresado no se encuentra en el rango de 1 - 12 \n\t Intenta Nuevamente"  << endl;
+							}
+							while (Month < 1 || Month > 12);
 							Show = Months(Month);
 							for (int a = 0; a < (A - 1); a++)
 							{
 								Ans += Amount[a][Month -1];
 							}
-							//printf("\tLas ventas de mes %s son %i \n\n\n\n\n\n\t\t", Show, Ans);
-							cout << "\tLas ventas de mes " << Show << " son: " << Ans << "\n\n\n\n\n\n\t\t";
+							printf("\tLas ventas de mes %s son %.2f \n\n\n\n\n\n\t\t", Show.c_str(), Ans, 2);
 							system("pause");
 							break;
+						// Muestra el total de ventas por producto
 						case 2:
 							Ans = 0;
 							AnsT = 0;
@@ -190,12 +236,13 @@ int main ()
 									Ans += Amount[a][e];
 								}
 								cout << "\t";
-								cout << "Se han vendido " << Ans << " del producto:" << Head[a] << "\n";
+								printf("Se han vendido %.2f del producto: %s \n", Ans, Head[a].c_str());
 								Ans = 0;
 							}
 							cout << "\n\n\n\n\n\n\t\t";
 							system("pause");
 							break;
+						// Muestra el producto mas vendido
 						case 3:
 							int C3;
 							Ans = 0;
@@ -213,9 +260,10 @@ int main ()
 								}
 								Ans = 0;
 							}
-							cout << "\tEl producto mas vendido es: " << Head[C3] << " con " << AnsT << " productos vendidos"<< "\n\n\n\n\n\n\t\t";
+							printf ("\tEl producto mas vendido es: %s con %.2f productos vendidos\n\n\n\n\n\n\t\t", Head[C3].c_str(), AnsT);
 							system("pause");
 							break;
+						// Muestra el producto menos vendido
 						case 4:
 							int C4;
 							Ans = 0;
@@ -238,13 +286,20 @@ int main ()
 								}
 								Ans = 0;
 							}
-							cout << "\tEl producto menos vendido es: " << Head[C4] << " con " << AnsT << " productos vendidos"<< "\n\n\n\n\n\n\t\t";
+							printf("\tEl producto menos vendido es: %s con %.2f productos vendidos\n\n\n\n\n\n\t\t", Head[C4].c_str(), AnsT);
 							system("pause");
 							break;
+						// Muestra el producto mas vendido en el mes solicitado
 						case 5:
 							int C5;
-							Ans = 0;
-							Month = Submenu();
+							do
+							{
+								Ans = 0;
+								Month = Submenu();
+								if (Month < 1 || Month > 12)
+									cout << "El numero " << Month << " ingresado no se encuentra en el rango de 1 - 12 \n\t Intenta Nuevamente"  << endl;
+							}
+							while (Month < 1 || Month > 12);
 							Show = Months(Month);
 							for (int a = 0; a < (A - 1); a++)
 							{
@@ -254,14 +309,21 @@ int main ()
 									C5 = a;
 								}
 							}
-							cout << "\tEl producto mas vendido en el mes de " << Show << " es " << Head[C5] << "con " << Ans << " productos vendidos" << "\n\n\n\n\n\n\t\t";
+							printf("\tEl producto mas vendido en el mes de %s es %s con %.2f productos vendidos\n\n\n\n\n\n\t\t", Show.c_str(), Head[C5].c_str(), Ans);
 							system("pause");
 							break;
+						// Muestra el mes menos vendido en el mes solicitado
 						case 6:
 							int C6;
-							Ans = 0;
-							AnsT = 0;
-							Month = Submenu();
+							do
+							{
+								Ans = 0;
+								AnsT = 0;
+								Month = Submenu();
+								if (Month < 1 || Month > 12)
+									cout << "El numero " << Month << " ingresado no se encuentra en el rango de 1 - 12 \n\t Intenta Nuevamente"  << endl;
+							}
+							while (Month < 1 || Month > 12);
 							Show = Months(Month);
 							for (int a = 0; a < (A - 1); a++)
 							{
@@ -277,9 +339,10 @@ int main ()
 									C6 = a;
 								}
 							}
-							cout << "El producto menos vendido en el mes de " << Show << " es " << Head[C6] << "con " << AnsT << " productos vendidos" << "\n\n\n\n\n\n\t\t";
+							printf ("\tEl producto menos vendido en el mes de %s es %s con %.2f productos vendidos\n\n\n\n\n\n\t\t", Show.c_str(), Head[C6].c_str(), AnsT);
 							system("pause");
 							break;
+						// Muestra el mes con mas ventas
 						case 7:
 							int C7;
 							Ans = 0;
@@ -298,9 +361,10 @@ int main ()
 								Ans = 0;
 							}
 							Show = Months(C7 + 1);
-							cout << "\tEl mes con mas ventas a sido " << Show << " con " << AnsT << "\n\n\n\n\n\n\t\t";
+							printf("\tEl mes con mas ventas a sido %s con %.2f\n\n\n\n\n\n\t\t", Show.c_str(), AnsT);
 							system("pause");
 							break;
+						// Muestra el mes con menos ventas
 						case 8:
 							int C8;
 							Ans = 0;
@@ -324,9 +388,10 @@ int main ()
 								Ans = 0;
 							}
 							Show = Months(C7 + 1);
-							cout << "\tEl mes con menos ventas a sido " << Show << " con " << AnsT << "\n\n\n\n\n\n\t\t";
+							printf ("\tEl mes con menos ventas a sido %s con %.2f\n\n\n\n\n\n\t\t", Show.c_str(), AnsT);
 							system("pause");
 							break;
+						// Muestra el promedio de ventas por mes
 						case 9:
 							Ans = 0;
 							AnsT = 0;
@@ -339,11 +404,12 @@ int main ()
 								AnsT = Ans;
 								Ans = 0;
 								Show = Months(a + 1);
-								cout << "\tEl promedio de " << Show << " es " << (AnsT / (A - 1)) << endl;
+								printf("\tEl promedio de %s es %.2f\n", Show.c_str(), (AnsT / (A - 1)));
 							}
 							cout << "\n\n\n\n\n\n\t\t";
 							system("pause");
 							break;
+						// Muestra el promedio total de ventas
 						case 10:
 							Ans = 0;
 							AnsT = 0;
@@ -355,22 +421,25 @@ int main ()
 									AnsT++;
 								}
 							}	
-							cout << "\tEl promedio total es " << (Ans / (AnsT)) << "\n\n\n\n\n\n\t\t";
+							printf("\tEl promedio total es %.2f\n\n\n\n\n\n\t\t", (Ans / (AnsT)));
 							system("pause");
 							break;
+						// Muestra este mensaje en caso de no ingresar un numero del 1 al 10
 						default:
 							system("cls");
 							cout << "El numero ingresado no se encuentra en el rango de 1 - 10" << "\n\n\n\n\n\n\t\t";
 							system("pause");
 							break;
 					}	
+				// Pregunta si quieren ejecutar nuevamente el programa
 				system("cls");
-				cout << "Ejecutar nuevamente el programa [S/N]" << endl;
+				cout << "Para ejecutar nuevamente el programa ingrese \"S\" o \"s\", de lo contrario presione cualquier tecla para cerrar el programa" << endl;
 				cin >> REP;
 				}
 				while (REP == 's' || REP == 'S');
 				system("cls");
-				cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\t\t\tWritten by Luis Ortega\n\t\t\t\t7690-17-360\n\n";
+				cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\t\t\t\tWritten by\n\t\t\t\t***********\n\t\t\t\tLuis Ortega\n\t\t\t\t7690-17-360\n";
+				cout << "\t\t\t\tMario Field\n\t\t\t       7690-17-20612\n\n";
 				system("pause");
 			}
 		}
@@ -378,4 +447,3 @@ int main ()
 	while (Start == 0);
     return 0;
 }
-
