@@ -274,7 +274,7 @@ int main ()
 								{
 									Ans += Amount[a][e];
 								}
-								if (AnsT == 0)
+								if (AnsT == 0 && Ans == 0)
 								{
 									AnsT = Ans;
 									C4 = a;
@@ -328,7 +328,7 @@ int main ()
 							for (int a = 0; a < (A - 1); a++)
 							{
 								Ans = Amount[a][Month -1];
-								if (AnsT == 0)
+								if (AnsT == 0 && Ans == 0)
 								{
 									AnsT = Ans;
 									C6 = a;
@@ -375,7 +375,7 @@ int main ()
 								{
 									Ans += Amount[e][a];
 								}
-								if (AnsT == 0)
+								if (AnsT == 0 && Ans == 0)
 								{
 									AnsT = Ans;
 									C8 = a;
@@ -433,8 +433,9 @@ int main ()
 					}	
 				// Pregunta si quieren ejecutar nuevamente el programa
 				system("cls");
-				cout << "Para ejecutar nuevamente el programa ingrese \"S\" o \"s\", de lo contrario presione cualquier tecla para cerrar el programa" << endl;
+				cout << "Para ejecutar nuevamente el programa ingrese \"S\"" << endl;
 				cin >> REP;
+				system("pause");
 				}
 				while (REP == 's' || REP == 'S');
 				system("cls");
