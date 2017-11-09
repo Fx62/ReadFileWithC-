@@ -102,7 +102,7 @@ int main ()
 	do
 	{
 		cout << "Ingrese el nombre del archivo" << endl;
-		cin >> Path;
+		getline(cin, Path);
 		ifstream Y;
 		Y.open(Path.c_str());
 		if (Y.good())
@@ -190,6 +190,7 @@ int main ()
 				// El do while es por si el usuario no ingresa un numero valido, asi se repite hasta ingresar un numero del listado	
 				do
 				{
+					system("cls");
 					cout << "\n======================================================\n\n";
 					cout << "1 -  Total de ventas por mes" << endl;
 					cout << "2 -  Total de ventas por producto" << endl;
@@ -433,7 +434,7 @@ int main ()
 					}	
 				// Pregunta si quieren ejecutar nuevamente el programa
 				system("cls");
-				cout << "Para ejecutar nuevamente el programa ingrese \"S\"" << endl;
+				cout << "Para ejecutar nuevamente el programa ingrese \"S\" \nde lo contrario puede presionar \"N\"" << endl;
 				cin >> REP;
 				system("pause");
 				}
